@@ -62,9 +62,9 @@ def move_message():
         mbox.left = WIDTH
 def read_question():
     global count,questions
-    file=open(question_File,"r")
+    file=open(question_File,"r") 
     for i in file:
-        questions.append(i)
+        questions.append(i) 
         count+=1
     file.close()
 
@@ -98,6 +98,21 @@ def gameover():
     question = [m,"-","-","-","-",5]
     timeleft = 0 
     game_over=True
+
+def skip_question():
+
+    global question,timeleft
+    if questions and not game_over:
+        question = read_next_question()
+        timeleft = 10
+    else:
+        gameover()
+def update_timeleft():
+    global timeleft
+    if timeleft:
+        timeleft -=1 
+    else: 
+        gameover()
     
 
 
@@ -113,5 +128,6 @@ def gameover():
         
 read_question()
 question = read_next_question()
+clock.schedule_interval(update_timeleft,1)
 pgzrun.go() 
 
