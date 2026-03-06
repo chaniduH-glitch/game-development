@@ -7,11 +7,16 @@ HEIGHT = 400
 ship = Actor("galaga")
 bullets = []
 enemies = []
-enemies.append(Actor("bug"))
+for i in range(5):
+
+
+    enemies.append(Actor("bug"))
+    enemies[-1].x = 100+90*i
+    enemies[-1].y = 80
 ship.pos = (WIDTH//2,HEIGHT-60)
-speed = 10
-enemies[-1].x = 10
-enemies[-1].y = -100
+speed = 6
+direction = 1
+
 score = 0
 
 def display_Score():
@@ -23,7 +28,9 @@ def on_key_down(key):
         bullets[-1].x = ship.x
         bullets[-1].y = ship.y-50
 def update():
-    global score
+    global score,direction
+    move_down = False 
+
     if keyboard.a:
         ship.x-= speed 
         if ship.x <= 0:
@@ -37,13 +44,21 @@ def update():
             bullets.remove(i)
         else:
             i.y-=10 
+    if len(enemies)>0 and (enemies[-1].x>WIDTH-80 or enemies[0].x<80):
+        move_down = True
+        direction = direction*-1
+
+
     for j in enemies:
-        j.y+=5 
-        if j.y > HEIGHT:
-            j.y = -100
-            j.x = random.randint(50,WIDTH-50)
+        j.x+=5*direction
+        if move_down == True:
+            
+            j.y+=50 
+
+        
         for i in bullets:
             if j.colliderect(i):
+                sounds.eep.play()
                 score+=100
                 bullets.remove(i)
                 enemies.remove(j)
