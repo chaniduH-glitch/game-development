@@ -46,12 +46,14 @@ def update():
             j.x = random.randint(50,WIDTH-50)
         for i in bullets:
             if j.colliderect(i):
+                sounds.eep.play()
                 if j.image == "bomb":
                     score -=50 
                 else:
                     score+=100
                     
                 score+=100
+                
                 bullets.remove(i)
                 enemies.remove(j)
                 new = Actor(random.choice(["fruit","bomb"])) 
